@@ -34,7 +34,7 @@ public class ItemService {
 
         if(num>=0 && currentQuality<50)
             return true;
-        else if(num<=0 && currentQuality<0)
+        else if(num<=0 && currentQuality>0)
             return true;
 
         return false;
