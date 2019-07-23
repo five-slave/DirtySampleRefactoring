@@ -81,6 +81,19 @@ public class DirtySampleTest {
     }
 
     @Test
+    public void Aged_Brie가_Sell_In이0이고_Quality가50일때_updateQaulity이후_Quality는50이어야한다(){
+        List<Item> items = dirtySample.getItems();
+        Item brie = findItemByName(items,"Aged Brie");
+
+        brie.setQuality(50);
+        brie.setSellIn(0);
+
+        dirtySample.updateQuality();
+
+        assertThat(brie.getQuality(),is(50));
+    }
+
+    @Test
     public void Backstage가_Sell_In이0이고_Quality가30일때_updateQaulity이후_Quality는0이어야한다(){
         List<Item> items = dirtySample.getItems();
         Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
@@ -133,6 +146,32 @@ public class DirtySampleTest {
     }
 
     @Test
+    public void Backstage가_Sell_In이1이고_Quality가50일때_updateQaulity이후_Quality는50이어야한다(){
+        List<Item> items = dirtySample.getItems();
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+
+        backstage.setQuality(50);
+        backstage.setSellIn(1);
+
+        dirtySample.updateQuality();
+
+        assertThat(backstage.getQuality(),is(50));
+    }
+
+    @Test
+    public void Backstage가_Sell_In이1이고_Quality가49일때_updateQaulity이후_Quality는50이어야한다(){
+        List<Item> items = dirtySample.getItems();
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+
+        backstage.setQuality(49);
+        backstage.setSellIn(1);
+
+        dirtySample.updateQuality();
+
+        assertThat(backstage.getQuality(),is(50));
+    }
+
+    @Test
     public void Ragnaros가_Sell_In이0이고_Quality가1일때_updateQaulity이후_Quality는1이어야한다(){
         List<Item> items = dirtySample.getItems();
         Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
@@ -152,6 +191,19 @@ public class DirtySampleTest {
 
         ragnaros.setQuality(1);
         ragnaros.setSellIn(-3);
+
+        dirtySample.updateQuality();
+
+        assertThat(ragnaros.getQuality(),is(1));
+    }
+
+    @Test
+    public void Ragnaros가_Sell_In이3이고_Quality가1일때_updateQaulity이후_Quality는1이어야한다(){
+        List<Item> items = dirtySample.getItems();
+        Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+
+        ragnaros.setQuality(1);
+        ragnaros.setSellIn(3);
 
         dirtySample.updateQuality();
 
@@ -195,5 +247,31 @@ public class DirtySampleTest {
         dirtySample.updateQuality();
 
         assertThat(any.getQuality(),is(8));
+    }
+
+    @Test
+    public void Ragnaros의_Sell_In이5이고_Quality가10일때_updateQaulity이후_Sell_In는5이어야한다(){
+        List<Item> items = dirtySample.getItems();
+        Item any = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+
+        any.setQuality(10);
+        any.setSellIn(5);
+
+        dirtySample.updateQuality();
+
+        assertThat(any.getSellIn(),is(5));
+    }
+
+    @Test
+    public void 일반항목의_Sell_In이5이고_Quality가10일때_updateQaulity이후_Sell_In는4이어야한다(){
+        List<Item> items = dirtySample.getItems();
+        Item any = findItemByName(items,"any");
+
+        any.setQuality(10);
+        any.setSellIn(5);
+
+        dirtySample.updateQuality();
+
+        assertThat(any.getSellIn(),is(4));
     }
 }
