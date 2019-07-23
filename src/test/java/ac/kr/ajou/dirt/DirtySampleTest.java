@@ -27,6 +27,21 @@ public class DirtySampleTest {
         return null;
 
     }
+    public int findItemQualityByName(List<Item> items, String name){
+
+
+        for(int i =0;i<items.size();i++){
+            if(items.get(i).getName().equals(name)){
+                return items.get(i).getQuality();
+
+            }
+        }
+
+        return 100;
+
+    }
+
+
     @Before
     public void set_up(){
         Item brie = new Item("Aged Brie",0,0);
@@ -195,5 +210,22 @@ public class DirtySampleTest {
         dirtySample.updateQuality();
 
         assertThat(any.getQuality(),is(8));
+    }
+    @Test
+    public void Quality에_숫자집어넣어서_값에따라_updateQuality함수결정(){
+        List<Item> items = dirtySample.getItems();
+        Item any = findItemByName(items,"any");
+        ItemService itemService = new ItemService();
+        itemService.addQualityWithNum(any,100);
+        assertThat(any.getQuality(), is(100));
+
+    }
+    @Test
+    public void SellIn에_숫자에집어넣어서_값에따라_updateQuality함수결정(){
+        List<Item> items = dirtySample.getItems();
+        Item any = findItemByName(items,"any");
+        ItemService itemService = new ItemService();
+        itemService.addSellInWithNum(any, 5);
+        assertThat(any.getSellIn(), is(5));
     }
 }
