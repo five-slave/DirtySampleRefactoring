@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
 
 public class DirtySampleTest {
 
@@ -27,16 +28,46 @@ public class DirtySampleTest {
         return null;
 
     }
+
     @Before
     public void set_up(){
         Item brie = new Item("Aged Brie",0,0);
         Item backstage = new Item("Backstage passes to a TAFKAL80ETC concert",0,0);
         Item ragnaros = new Item("Sulfuras, Hand of Ragnaros",0,0);
-        Item any = new Item("any",0,0);
+        Item any = new Item("any", 0,0);
 
         List<Item> items = new ArrayList<>(Arrays.asList(brie,backstage,ragnaros,any));
 
         dirtySample = new DirtySample(items);
+    }
+
+    @Test
+    public void 이름이_Aged_Brie또는_Backstage인데_quality가_50보다_큰경우_Quality는_변하지않는다()
+    {
+        List<Item> items = dirtySample.getItems();
+        Item brie = findItemByName(items,"Aged Brie");
+        brie.setQuality(100);
+        int number = brie.getQuality();
+        dirtySample.updateQuality();
+        int updateBrieQuality = brie.getQuality();
+        assertTrue(updateBrieQuality  == number );
+
+    }
+
+    @Test
+    public void 이름이_Aged_Brie또는_Backstage이면_Sell_In은_1_감소한다()
+    {
+        List<Item> items = dirtySample.getItems();
+        Item brie = findItemByName(items,"Aged Brie");
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        int brieSellIn = brie.getSellIn();
+        int backstageSellin = backstage.getSellIn();
+        dirtySample.updateQuality();
+        int updateBrieSellin = brie.getSellIn();
+        int updateBackstageSellin = backstage.getSellIn();
+        assertTrue(updateBrieSellin  == brieSellIn - 1 );
+        assertTrue(updateBrieSellin  == backstageSellin - 1 );
+
     }
 
     @Test
@@ -170,6 +201,18 @@ public class DirtySampleTest {
 
         assertThat(backstage.getQuality(),is(50));
     }
+  
+    public void backstage가_Sell_in이10이고_quality가_50보다_큰경우_Quality는_변하지않는다() {
+        List<Item> items = dirtySample.getItems();
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        backstage.setQuality(55);
+        backstage.setSellIn(10);
+        int number = backstage.getQuality();
+        dirtySample.updateQuality();
+        int updateBackstageQuality = backstage.getQuality();
+        assertThat(updateBackstageQuality,is(number));
+
+    }
 
     @Test
     public void Ragnaros가_Sell_In이0이고_Quality가1일때_updateQaulity이후_Quality는1이어야한다(){
@@ -249,6 +292,7 @@ public class DirtySampleTest {
         assertThat(any.getQuality(),is(8));
     }
 
+
     @Test
     public void Ragnaros의_Sell_In이5이고_Quality가10일때_updateQaulity이후_Sell_In는5이어야한다(){
         List<Item> items = dirtySample.getItems();
@@ -273,5 +317,104 @@ public class DirtySampleTest {
         dirtySample.updateQuality();
 
         assertThat(any.getSellIn(),is(4));
+    }
+
+  @Test
+    public void 이름이_일반항목이고_quality가_0일때_updateQuality를하면_Quality는_변하지않는다() {
+        List<Item> items = dirtySample.getItems();
+        Item any = findItemByName(items,"any");
+        any.setQuality(0);
+        int number = any.getQuality();
+        dirtySample.updateQuality();
+        int updateAnyQuality = any.getQuality();
+        assertThat(updateAnyQuality,is(number));
+
+
+
+    @Test
+    public void DirtySample안에있는_boolean_isBrie_검증(){
+        List<Item> items = dirtySample.getItems();
+        Item brie = findItemByName(items,"Aged Brie");
+        assertThat(dirtySample.isBrie(brie), is(true));
+    }
+    @Test
+    public void DirtySample안에있는_boolean_isBackstage_검증(){
+        List<Item> items = dirtySample.getItems();
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        assertThat(dirtySample.isBackstage(backstage), is(true));
+    }
+    @Test
+    public void DirtySample안에있는_boolean_isRagnaros_검증(){
+        List<Item> items = dirtySample.getItems();
+        Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+        assertThat(dirtySample.isRagnaros(ragnaros), is(true));
+    }
+
+    @Test
+    public void ItemService안에있는_addQualityWithNum_검증(){
+        List<Item> items = dirtySample.getItems();
+
+        ItemService itemService = new ItemService();
+
+        Item brie = findItemByName(items,"Aged Brie");
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+
+        brie.setQuality(0);
+        backstage.setQuality(50);
+        ragnaros.setQuality(25);
+
+        itemService.addQualityWithNum(brie, 1);
+        itemService.addQualityWithNum(backstage, 1);
+        itemService.addQualityWithNum(ragnaros, 1);
+
+        assertThat(brie.getQuality(), is(1));
+        assertThat(backstage.getQuality(), is(50));
+        assertThat(ragnaros.getQuality(), is(26));
+
+    }
+    @Test
+    public void ItemService안에있는_addSellInWithNum_검증(){
+
+        List<Item> items = dirtySample.getItems();
+
+        ItemService itemService = new ItemService();
+
+        Item brie = findItemByName(items,"Aged Brie");
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+
+        brie.setSellIn(0);
+        backstage.setSellIn(-1);
+        ragnaros.setSellIn(1);
+
+        itemService.addSellInWithNum(brie, 1);
+        itemService.addSellInWithNum(backstage, 1);
+        itemService.addSellInWithNum(ragnaros, 1);
+
+        assertThat(brie.getSellIn(), is(1));
+        assertThat(backstage.getSellIn(), is(0));
+        assertThat(ragnaros.getSellIn(), is(2));
+
+    }
+    @Test
+    public void ItemService안에있는_isValidQualityForUpdatingQuality_검증(){
+
+        List<Item> items = dirtySample.getItems();
+
+        ItemService itemService = new ItemService();
+
+        Item brie = findItemByName(items,"Aged Brie");
+        Item any = findItemByName(items, "any");
+
+        brie.setQuality(0);
+        any.setQuality(50);
+
+        assertThat(itemService.isValidQulityForUpdatingQuality(brie, 10), is(true));
+        assertThat(itemService.isValidQulityForUpdatingQuality(any, 10), is(false));
+
+
+
+
     }
 }
