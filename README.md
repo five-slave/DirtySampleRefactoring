@@ -141,6 +141,10 @@ public boolean isValidQulityForUpdatingQuality(Item item, int num){
 }
 ```
 
+## 테스트
+테스트의 경우, 앞서 분석한 토대로 구현을 하였다. 이름이 Brie, Backstage, Ragnaros와 이 세가지에 해당이 되지 않는 경우로 각각 나누어서 구현하였다. 그래서 이름에 따라 Sellin과 Quality의 valid 여부와 함수를 실행하면서 valid에서 invalid로, invalid에서 valid로 변화한 경우를 고려하여 각각의 test case를 구현하였다. 
+또한 Backstage의 경우, Sellin의 범위에 따라 Quality의 변화가 달라지기 때문에 이 부분도 test를 구현하였다. 
+마지막으로 Sellin과 Quality와 상관없이 이름이 Ragnaros가 아닌 경우, Sellin의 변화에 대해서도 test case를 구현하였다. 
 
 ## 결론
 
