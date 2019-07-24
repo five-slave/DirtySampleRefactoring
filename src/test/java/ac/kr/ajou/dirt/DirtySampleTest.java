@@ -201,7 +201,7 @@ public class DirtySampleTest {
 
         assertThat(backstage.getQuality(),is(50));
     }
-  
+    @Test
     public void backstage가_Sell_in이10이고_quality가_50보다_큰경우_Quality는_변하지않는다() {
         List<Item> items = dirtySample.getItems();
         Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
@@ -254,7 +254,7 @@ public class DirtySampleTest {
     }
 
     @Test
-    public void 일반항목의_Sell_In이0이고_Quality가1일때_updateQaulity이후_Quality는1이어야한다(){
+    public void 일반항목의_Sell_In이0이고_Quality가1일때_updateQaulity이후_Quality는0이어야한다(){
         List<Item> items = dirtySample.getItems();
         Item any = findItemByName(items,"any");
 
@@ -267,7 +267,7 @@ public class DirtySampleTest {
     }
 
     @Test
-    public void 일반항목의_Sell_In이3이고_Quality가10일때_updateQaulity이후_Quality는1이어야한다(){
+    public void 일반항목의_Sell_In이3이고_Quality가10일때_updateQaulity이후_Quality는9이어야한다(){
         List<Item> items = dirtySample.getItems();
         Item any = findItemByName(items,"any");
 
@@ -321,15 +321,15 @@ public class DirtySampleTest {
 
   @Test
     public void 이름이_일반항목이고_quality가_0일때_updateQuality를하면_Quality는_변하지않는다() {
-        List<Item> items = dirtySample.getItems();
-        Item any = findItemByName(items,"any");
-        any.setQuality(0);
-        int number = any.getQuality();
-        dirtySample.updateQuality();
-        int updateAnyQuality = any.getQuality();
-        assertThat(updateAnyQuality,is(number));
+      List<Item> items = dirtySample.getItems();
+      Item any = findItemByName(items, "any");
+      any.setQuality(0);
+      int number = any.getQuality();
+      dirtySample.updateQuality();
+      int updateAnyQuality = any.getQuality();
+      assertThat(updateAnyQuality, is(number));
 
-
+  }
 
     @Test
     public void DirtySample안에있는_boolean_isBrie_검증(){
