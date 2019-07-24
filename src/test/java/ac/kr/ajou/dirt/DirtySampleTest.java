@@ -27,6 +27,7 @@ public class DirtySampleTest {
         return null;
 
     }
+
     @Before
     public void set_up(){
         Item brie = new Item("Aged Brie",0,0);
@@ -195,5 +196,92 @@ public class DirtySampleTest {
         dirtySample.updateQuality();
 
         assertThat(any.getQuality(),is(8));
+    }
+
+
+
+    @Test
+    public void DirtySample안에있는_boolean_isBrie_검증(){
+        List<Item> items = dirtySample.getItems();
+        Item brie = findItemByName(items,"Aged Brie");
+        assertThat(dirtySample.isBrie(brie), is(true));
+    }
+    @Test
+    public void DirtySample안에있는_boolean_isBackstage_검증(){
+        List<Item> items = dirtySample.getItems();
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        assertThat(dirtySample.isBackstage(backstage), is(true));
+    }
+    @Test
+    public void DirtySample안에있는_boolean_isRagnaros_검증(){
+        List<Item> items = dirtySample.getItems();
+        Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+        assertThat(dirtySample.isRagnaros(ragnaros), is(true));
+    }
+
+    @Test
+    public void ItemService안에있는_addQualityWithNum_검증(){
+        List<Item> items = dirtySample.getItems();
+
+        ItemService itemService = new ItemService();
+
+        Item brie = findItemByName(items,"Aged Brie");
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+
+        brie.setQuality(0);
+        backstage.setQuality(50);
+        ragnaros.setQuality(25);
+
+        itemService.addQualityWithNum(brie, 1);
+        itemService.addQualityWithNum(backstage, 1);
+        itemService.addQualityWithNum(ragnaros, 1);
+
+        assertThat(brie.getQuality(), is(1));
+        assertThat(backstage.getQuality(), is(50));
+        assertThat(ragnaros.getQuality(), is(26));
+
+    }
+    @Test
+    public void ItemService안에있는_addSellInWithNum_검증(){
+
+        List<Item> items = dirtySample.getItems();
+
+        ItemService itemService = new ItemService();
+
+        Item brie = findItemByName(items,"Aged Brie");
+        Item backstage = findItemByName(items,"Backstage passes to a TAFKAL80ETC concert");
+        Item ragnaros = findItemByName(items,"Sulfuras, Hand of Ragnaros");
+
+        brie.setSellIn(0);
+        backstage.setSellIn(-1);
+        ragnaros.setSellIn(1);
+
+        itemService.addSellInWithNum(brie, 1);
+        itemService.addSellInWithNum(backstage, 1);
+        itemService.addSellInWithNum(ragnaros, 1);
+
+        assertThat(brie.getSellIn(), is(1));
+        assertThat(backstage.getSellIn(), is(0));
+        assertThat(ragnaros.getSellIn(), is(2));
+
+    }
+    @Test
+    public void ItemService안에있는_isValidQualityForUpdatingQuality_검증(){
+
+        List<Item> items = dirtySample.getItems();
+
+        ItemService itemService = new ItemService();
+
+        Item brie = findItemByName(items,"Aged Brie");
+        Item any = findItemByName(items, "any");
+
+        brie.setQuality(0);
+        any.setQuality(50);
+
+        assertThat(itemService.isValidQulityForUpdatingQuality(brie, 10), is(true));
+        assertThat(itemService.isValidQulityForUpdatingQuality(any, 10), is(false));
+
+
     }
 }
