@@ -6,12 +6,12 @@ public class BackstageItemService extends ItemService {
     public void updateQuality(Item item){
         int currentSellIn = item.getSellIn();
 
+        addQualityWithNum(item,1);
+
+        if(currentSellIn< 11)
+            addQualityWithNum(item,1);
         if(currentSellIn<6)
-            addQualityWithNum(item,3);
-        else if(currentSellIn< 11)
-            addQualityWithNum(item,2);
-        else
-            addQualityWithNum(item, 1);
+            addQualityWithNum(item,1);
 
         addSellInWithNum(item,-1);
 
